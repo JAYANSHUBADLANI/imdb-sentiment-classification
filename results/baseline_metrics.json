@@ -1,0 +1,7 @@
+{
+  "model": "TF-IDF + Logistic Regression",
+  "accuracy": 0.8996,
+  "f1_score": 0.9001,
+  "latency_ms": 0.0003,
+  "train_time_s": 2.27
+}

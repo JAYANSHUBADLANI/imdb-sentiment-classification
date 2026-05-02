@@ -1,8 +1,6 @@
 # IMDB Sentiment Classification
 
-A progressive comparison of three NLP approaches on the [IMDB 50K Movie Reviews](https://huggingface.co/datasets/imdb) dataset — from a classical ML baseline through deep learning and up to a fine-tuned transformer.
-
----
+A progressive comparison of three NLP approaches on the [IMDB 50K Movie Reviews](https://huggingface.co/datasets/imdb) dataset: TF-IDF baseline, BiLSTM, and fine-tuned DistilBERT.
 
 ## Project Structure
 
@@ -25,8 +23,6 @@ imdb-sentiment-classification/
 └── README.md
 ```
 
----
-
 ## Model Comparison
 
 | Model | Accuracy | F1 Score | Latency / Sample | Notes |
@@ -37,17 +33,15 @@ imdb-sentiment-classification/
 
 > Exact numbers are written to `results/` after each notebook runs.
 
----
-
 ## Approach Summary
 
-### 1. `baseline.ipynb` — TF-IDF + Logistic Regression
+### 1. `baseline.ipynb` - TF-IDF + Logistic Regression
 - Regex-based text cleaning (HTML stripping, lowercasing, punctuation removal)
 - `TfidfVectorizer` with unigrams + bigrams, 50k vocabulary, sublinear TF scaling
 - `LogisticRegression` (L2, lbfgs solver)
 - Outputs: accuracy, F1, confusion matrix, top predictive features
 
-### 2. `lstm.ipynb` — Bidirectional LSTM + GloVe
+### 2. `lstm.ipynb` - Bidirectional LSTM + GloVe
 - Same preprocessing pipeline
 - Keras `Tokenizer` → integer sequences → padding to length 256
 - GloVe 6B 100d embeddings (auto-downloaded) loaded into a frozen `Embedding` layer
@@ -55,15 +49,13 @@ imdb-sentiment-classification/
 - `EarlyStopping` + `ReduceLROnPlateau` callbacks
 - Outputs: training curves (accuracy + loss), confusion matrix
 
-### 3. `bert.ipynb` — DistilBERT Fine-tuning
+### 3. `bert.ipynb` - DistilBERT Fine-tuning
 - `DistilBertTokenizerFast` with truncation/padding to 256 tokens
 - `DistilBertForSequenceClassification` (`distilbert-base-uncased`, 66M params)
 - HuggingFace `Trainer` with warmup, weight decay, early stopping
 - Mixed precision (fp16) on GPU automatically enabled
 - Per-sample inference latency benchmark (100-run average)
 - Demo inference function included
-
----
 
 ## Setup
 
@@ -87,8 +79,6 @@ jupyter notebook bert.ipynb
 
 Each notebook saves its metrics to `results/` as a JSON file and saves plots as PNGs.
 
----
-
 ## Key Design Decisions
 
 - **GloVe download** is handled automatically in `lstm.ipynb` if the file is not found locally.
@@ -96,10 +86,7 @@ Each notebook saves its metrics to `results/` as a JSON file and saves plots as 
 - **`report_to='none'`** in TrainingArguments keeps BERT training output clean without requiring wandb/tensorboard.
 - All random seeds are fixed (`RANDOM_SEED = 42`) for reproducibility.
 
----
-
 ## Author
 
 **Jayanshu Badlani**  
-Data Science Enthusiast | Justdial  
-[GitHub](https://github.com/JAYANSHUBADLANI)
+[GitHub](https://github.com/JAYANSHUBADLANI) | [LinkedIn](https://linkedin.com/in/jayanshu-badlani)  

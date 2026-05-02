@@ -1,0 +1,115 @@
+name: Execute Notebooks & Commit Outputs
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  execute-notebooks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Cache pip packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: pip-
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install \
+            numpy pandas matplotlib seaborn scikit-learn \
+            datasets evaluate accelerate transformers \
+            torch tensorflow \
+            jupyter nbconvert ipykernel tqdm requests
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      # ─────────────────────────────────────────────────────
+      # BASELINE
+      # ─────────────────────────────────────────────────────
+      - name: Run baseline.ipynb
+        run: |
+          jupyter nbconvert --to notebook --execute --inplace \
+            --ExecutePreprocessor.timeout=600 \
+            baseline.ipynb
+
+      - name: "Commit: Add baseline results with output cells"
+        run: |
+          git add baseline.ipynb
+          git commit -m "Add baseline results with output cells"
+          git push
+
+      - name: "Commit: Add baseline metrics and plots"
+        run: |
+          git add results/
+          git diff --cached --quiet || true
+          git commit -m "Add baseline metrics and plots" || echo "Nothing new in results"
+          git push || true
+
+      # ─────────────────────────────────────────────────────
+      # LSTM
+      # ─────────────────────────────────────────────────────
+      - name: Cache GloVe embeddings
+        uses: actions/cache@v4
+        with:
+          path: glove.6B.100d.txt
+          key: glove-6B-100d-v1
+
+      - name: Run lstm.ipynb
+        run: |
+          jupyter nbconvert --to notebook --execute --inplace \
+            --ExecutePreprocessor.timeout=3600 \
+            lstm.ipynb
+
+      - name: "Commit: Add LSTM results with output cells"
+        run: |
+          git add lstm.ipynb
+          git commit -m "Add LSTM results with output cells"
+          git push
+
+      - name: "Commit: Add LSTM metrics and plots"
+        run: |
+          git add results/
+          git commit -m "Add LSTM metrics and plots" || echo "Nothing new in results"
+          git push || true
+
+      # ─────────────────────────────────────────────────────
+      # BERT
+      # ─────────────────────────────────────────────────────
+      - name: Run bert.ipynb
+        env:
+          CI_MODE: "true"
+        run: |
+          jupyter nbconvert --to notebook --execute --inplace \
+            --ExecutePreprocessor.timeout=7200 \
+            --ExecutePreprocessor.kernel_name=python3 \
+            bert.ipynb
+
+      - name: "Commit: Add BERT results with output cells"
+        run: |
+          git add bert.ipynb
+          git commit -m "Add BERT results with output cells"
+          git push
+
+      - name: "Commit: Add BERT metrics and plots"
+        run: |
+          git add results/
+          git commit -m "Add BERT metrics and plots" || echo "Nothing new in results"
+          git push || true
