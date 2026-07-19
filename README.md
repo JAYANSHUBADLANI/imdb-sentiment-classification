@@ -33,7 +33,7 @@ imdb-sentiment-classification/
 |---|---|---|---|---|
 | TF-IDF + Logistic Regression | ~0.8997 | ~0.9001 | ~0.01 ms | Strong baseline; interpretable |
 | Bidirectional LSTM + GloVe | ~0.8378 | ~0.8411 | ~3.0 ms | Sequential context; pre-trained embeddings |
-| DistilBERT (fine-tuned) | ~0.9320 | ~0.9321 | ~12 ms | Best accuracy; highest compute cost |
+| DistilBERT (fine-tuned) | ~0.9141 | ~0.9148 | ~24.2 ms | Best accuracy; highest compute cost |
 
 > Exact numbers are written to `results/` after each notebook runs.
 
