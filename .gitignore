@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Virtual environments
+venv/
+env/
+.env
+.venv/
+
+# GloVe embeddings (large files, download locally)
+glove.6B.zip
+glove.6B.100d.txt
+glove.6B.200d.txt
+glove.6B.300d.txt
+
+# HuggingFace / model checkpoints
+results/distilbert_checkpoints/
+*.bin
+*.safetensors
+*.pt
+*.pth
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
+wandb/
+runs/

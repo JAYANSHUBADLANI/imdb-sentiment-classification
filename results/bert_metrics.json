@@ -1,0 +1,11 @@
+{
+  "model": "DistilBERT (distilbert-base-uncased)",
+  "accuracy": 0.812,
+  "f1_score": 0.8266,
+  "latency_ms": 25.21,
+  "train_time_s": 684.32,
+  "epochs": 1,
+  "max_len": 128,
+  "device": "cpu",
+  "ci_mode": true
+}

@@ -1,0 +1,8 @@
+{
+  "model": "Bidirectional LSTM + GloVe 100d",
+  "accuracy": 0.8248,
+  "f1_score": 0.8329,
+  "latency_ms": 1.9745,
+  "train_time_s": 1806.41,
+  "epochs_ran": 9
+}
